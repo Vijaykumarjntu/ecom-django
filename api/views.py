@@ -7,6 +7,10 @@ from .serializers import MenuItemSerializer, OrderSerializer
 from rest_framework import viewsets
 from rest_framework.decorators import action    
 from django.db.models import Sum, F 
+from rest_framework.permissions import AllowAny
+from django_filters.rest_framework import DjangoFilterBackend 
+from rest_framework import filters                    # ← Add this line
+
 
 @api_view(['GET'])
 def api_root(request):
@@ -21,7 +25,14 @@ def api_root(request):
 class MenuItemViewSet(viewsets.ModelViewSet):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
-    permission_classes = []
+    permission_classes = [AllowAny]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    
+    filterset_fields = ['category', 'is_available']
+    search_fields = ['name', 'description']
+    ordering_fields = ['price', 'created_at', 'name']
+    ordering = ['category', 'name']
+
     def get_queryset(self):
         queryset = MenuItem.objects.all()
         category = self.request.query_params.get('category', None)
@@ -51,7 +62,14 @@ class MenuItemViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = []
+    permission_classes = [AllowAny]
+
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    
+    filterset_fields = ['status']
+    search_fields = ['customer_name', 'customer_phone']
+    ordering_fields = ['total_amount', 'created_at']
+    ordering = ['-created_at']
 
     def get_queryset(self):
         queryset = Order.objects.all()
