@@ -24,13 +24,29 @@ export const MenuProvider = ({ children }) => {
         setLoading(true);
         try {
             const data = await menuService.getAll();
-            setMenuItems(data);
+            console.log("this is the data of the fetch call");
+            console.log(data);
+            setMenuItems(data.results);
+            console.log("these are the results");
+            console.log(data.results);
         } catch (error) {
             console.error('Failed to fetch:', error);
         } finally {
             setLoading(false);
         }
     };
+
+    const searchMenuItems = async (query) => {
+        setLoading(true);
+        try {
+            const data = await menuService.search(query);
+            setMenuItems(data);
+        } catch (error) {
+            console.error('Search failed:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const addMenuItem = (item) => {
         console.log('Will add item:', item);
@@ -41,6 +57,7 @@ export const MenuProvider = ({ children }) => {
         loading,
         fetchMenuItems,
         addMenuItem,
+        searchMenuItems
     };
 
     return (

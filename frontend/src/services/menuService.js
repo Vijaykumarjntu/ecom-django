@@ -16,5 +16,7 @@ export const menuService = {
   
   delete: (id) => apiRequest(`/menu/${id}`, {
     method: 'DELETE'
-  })
+  }),
+
+  search: (query) => apiRequest(`/menu?search=${query}`),
 };
