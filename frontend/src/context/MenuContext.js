@@ -20,10 +20,10 @@ export const MenuProvider = ({ children }) => {
 
     // These functions will do API calls in Step 4
     // For now, just placeholders
-    const fetchMenuItems = async() => {
+    const fetchMenuItems = async(filters = {}) => {
         setLoading(true);
         try {
-            const data = await menuService.getAll();
+            const data = await menuService.getAll(filters);
             console.log("this is the data of the fetch call");
             console.log(data);
             setMenuItems(data.results);
@@ -36,20 +36,59 @@ export const MenuProvider = ({ children }) => {
         }
     };
 
-    const searchMenuItems = async (query) => {
+    // const searchMenuItems = async (query) => {
+    //     setLoading(true);
+    //     try {
+    //         const data = await menuService.search(query);
+    //         setMenuItems(data.results);
+    //     } catch (error) {
+    //         console.error('Search failed:', error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }
+
+    const addMenuItem = async (item) => {
+        try {
+            const newItem = await menuService.create(item);
+            setMenuItems([...menuItems, newItem]);
+            return newItem;
+        } catch (error) {
+            console.error('Failed to add item:', error);
+            throw error;
+        }
+    };
+    
+    // const addMenuItem = (item) => {
+    //     console.log('Will add item:', item);
+    // };
+    const updateMenuItem = async (id, updatedData) => {
         setLoading(true);
         try {
-            const data = await menuService.search(query);
-            setMenuItems(data);
+            const updated = await menuService.update(id, updatedData);
+            setMenuItems(menuItems.map(item => 
+            item.id === id ? updated : item
+            ));
+            return updated;
         } catch (error) {
-            console.error('Search failed:', error);
+            console.error('Failed to update:', error);
+            throw error;
         } finally {
             setLoading(false);
         }
-    }
+    };
 
-    const addMenuItem = (item) => {
-        console.log('Will add item:', item);
+    const deleteMenuItem = async (id) => {
+        setLoading(true);
+        try {
+            await menuService.delete(id);
+            setMenuItems(menuItems.filter(item => item.id !== id));
+        } catch (error) {
+            console.error('Failed to delete:', error);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
     };
 
     const value = {
@@ -57,7 +96,9 @@ export const MenuProvider = ({ children }) => {
         loading,
         fetchMenuItems,
         addMenuItem,
-        searchMenuItems
+        updateMenuItem,
+        deleteMenuItem
+        // searchMenuItems
     };
 
     return (

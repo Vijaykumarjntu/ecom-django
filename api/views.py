@@ -59,6 +59,20 @@ class MenuItemViewSet(viewsets.ModelViewSet):
             "is_available": menu_item.is_available
         })
 
+    # Custom action: Toggle availability of a menu item
+    # @action(detail=True, methods=['get'])
+    # def search(self, request, pk=None):
+    #     menu_item = self.get_object()
+    #     print(menu_item)
+    #     menu_item.is_available = not menu_item.is_available
+    #     menu_item.save()
+    #     print(menu_item)
+    #     return Response({
+    #         "id": menu_item.id,
+    #         "name": menu_item.name,
+    #         "is_available": menu_item.is_available
+    #     })
+
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
