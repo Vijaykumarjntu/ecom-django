@@ -10,6 +10,10 @@ export const apiRequest = async (endpoint, options = {}) => {
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}`);
   }
+  // DELETE requests (and other 204 responses) have no body
+  if (response.status === 204) {
+    return null;
+  }
   
   return response.json();
 };

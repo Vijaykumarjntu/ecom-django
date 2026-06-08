@@ -3,7 +3,6 @@ import { apiRequest } from './api';
 
 export const menuService = {
   // getAll: () => apiRequest('/menu'),
-  
   getAll: (filters = {}) => {
     const params = new URLSearchParams();
     if (filters.category) params.append('category', filters.category);
