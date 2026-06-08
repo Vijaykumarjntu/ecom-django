@@ -48,7 +48,6 @@ export default function MenuPage() {
 
     return (
       <div>
-        <h2 className="text-2xl font-bold mb-4">Menu Items</h2>
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Menu Items</h2>
           <button
@@ -129,7 +128,7 @@ export default function MenuPage() {
         ) : (
           <div className="grid grid-cols-3 gap-4">
             {menuItems.map(item => (
-              <div key={item.id} className="border p-4 rounded">
+               <div key={item.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100">
                 <div className="flex justify-between items-start">
                   <h3 className="font-bold text-lg">{item.name}</h3>
                   <div className="flex gap-1">
@@ -144,7 +143,8 @@ export default function MenuPage() {
                         });
                         setShowModal(true);
                       }}
-                      className="text-blue-600 hover:text-blue-800 px-2"
+                      // className="text-blue-600 hover:text-blue-800 px-2"
+                      className="text-blue-500 hover:text-blue-700 p-1 rounded-full hover:bg-blue-50 transition-colors"
                       title="Edit"
                     >
                       ✏️
@@ -155,7 +155,8 @@ export default function MenuPage() {
                           await deleteMenuItem(item.id);
                         }
                       }}
-                      className="text-red-600 hover:text-red-800 px-2"
+                      // className="text-red-600 hover:text-red-800 px-2"
+                      className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
                       title="Delete"
                     >
                       🗑️
